@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Onboarding — Resolute Real Estate</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <div class="wizard-container">
+
+    <!-- Stepper -->
+    <nav class="stepper" aria-label="Onboarding progress">
+      <div class="stepper-step active" data-step="0">
+        <span class="stepper-circle">1</span>
+        <span class="stepper-label">Welcome</span>
+      </div>
+      <div class="stepper-line"></div>
+      <div class="stepper-step" data-step="1">
+        <span class="stepper-circle">2</span>
+        <span class="stepper-label">Client Type</span>
+      </div>
+      <div class="stepper-line"></div>
+      <div class="stepper-step" data-step="2">
+        <span class="stepper-circle">3</span>
+        <span class="stepper-label">Details</span>
+      </div>
+      <div class="stepper-line"></div>
+      <div class="stepper-step" data-step="3">
+        <span class="stepper-circle">4</span>
+        <span class="stepper-label">Agreement</span>
+      </div>
+      <div class="stepper-line"></div>
+      <div class="stepper-step" data-step="4">
+        <span class="stepper-circle">5</span>
+        <span class="stepper-label">Documents</span>
+      </div>
+      <div class="stepper-line"></div>
+      <div class="stepper-step" data-step="5">
+        <span class="stepper-circle">6</span>
+        <span class="stepper-label">Confirmation</span>
+      </div>
+    </nav>
+
+    <!-- Step 0: Welcome -->
+    <section class="step-panel active" data-step="0">
+      <div class="welcome-content">
+        <img src="assets/resolute-logo.svg" alt="Resolute Real Estate" class="welcome-logo">
+        <div class="divider-gold"></div>
+        <h1>Welcome to Resolute Real Estate</h1>
+        <p class="welcome-subtitle">We're glad you're here. This brief onboarding process will help us understand your needs so we can serve you effectively.</p>
+
+        <div class="contact-card">
+          <div class="contact-card-info">
+            <h3>Jack Rohr</h3>
+            <p class="contact-title">Managing Broker</p>
+            <p class="contact-detail">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:3038421869">(303) 842-1869</a>
+            </p>
+            <p class="contact-detail">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <a href="mailto:jrohr@resoluteinv.com">jrohr@resoluteinv.com</a>
+            </p>
+          </div>
+        </div>
+
+        <button class="btn-primary btn-lg" id="btn-get-started">Get Started</button>
+      </div>
+    </section>
+
+    <!-- Step 1: Client Type -->
+    <section class="step-panel" data-step="1">
+      <div class="step-header">
+        <span class="eyebrow">Step 1</span>
+        <h2>How Can We Help You?</h2>
+        <p>Select the option that best describes your needs.</p>
+      </div>
+
+      <div class="card-select-group">
+        <button class="card-select" data-type="tenant" type="button">
+          <div class="card-select-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>I'm Looking for Space</h3>
+          <p>Tenant representation — office, retail, industrial, or other commercial space.</p>
+        </button>
+
+        <button class="card-select" data-type="landlord" type="button">
+          <div class="card-select-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3>I Have Space to Offer</h3>
+          <p>Landlord or owner — lease-up, property management, or repositioning.</p>
+        </button>
+
+        <button class="card-select" data-type="buyer_seller" type="button">
+          <div class="card-select-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>Investment Sales</h3>
+          <p>Buying or selling commercial property — acquisitions, dispositions, 1031 exchanges.</p>
+        </button>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" id="btn-back-1" type="button">Back</button>
+        <button class="btn-primary" id="btn-next-1" type="button">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 2: Questionnaire -->
+    <section class="step-panel" data-step="2">
+      <div class="step-header">
+        <span class="eyebrow">Step 2</span>
+        <h2>Tell Us About Your Needs</h2>
+        <p>Please fill in the details below so we can best assist you.</p>
+      </div>
+
+      <form class="questionnaire-form" id="questionnaire-form" novalidate>
+        <!-- Dynamic fields inserted by questionnaire.js -->
+      </form>
+
+      <div class="step-nav">
+        <button class="btn-secondary" id="btn-back-2" type="button">Back</button>
+        <button class="btn-primary" id="btn-next-2" type="button">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Agreement -->
+    <section class="step-panel" data-step="3">
+      <div class="step-header">
+        <span class="eyebrow">Step 3</span>
+        <h2>Representation Agreement</h2>
+        <p>Please review and sign the agreement below.</p>
+      </div>
+
+      <div class="agreement-box">
+        <div class="agreement-text" id="agreement-text">
+          <!-- Agreement content inserted by app.js -->
+        </div>
+
+        <div class="agreement-sign">
+          <label class="checkbox-label">
+            <input type="checkbox" id="agreement-checkbox">
+            <span class="checkbox-custom"></span>
+            <span>I have read and agree to the terms of this Representation Agreement.</span>
+          </label>
+
+          <div class="signature-group">
+            <div class="form-field">
+              <label for="signature-name">Signature (Type Full Name)</label>
+              <input type="text" id="signature-name" class="input-signature" placeholder="Type your full name">
+            </div>
+            <div class="form-field">
+              <label for="signature-date">Date</label>
+              <input type="text" id="signature-date" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" id="btn-back-3" type="button">Back</button>
+        <button class="btn-primary" id="btn-next-3" type="button">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 4: Document Upload -->
+    <section class="step-panel" data-step="4">
+      <div class="step-header">
+        <span class="eyebrow">Step 4</span>
+        <h2>Upload Documents</h2>
+        <p>Optionally upload any relevant documents (financials, current lease, property photos, etc.).</p>
+      </div>
+
+      <div class="upload-zone" id="upload-zone">
+        <div class="upload-zone-content">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="upload-icon">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <p class="upload-zone-text">Drag & drop files here</p>
+          <p class="upload-zone-sub">or</p>
+          <button class="btn-secondary btn-sm" id="btn-browse" type="button">Browse Files</button>
+          <input type="file" id="file-input" multiple hidden>
+        </div>
+      </div>
+
+      <div class="file-list" id="file-list">
+        <!-- File items inserted by upload.js -->
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-secondary" id="btn-back-4" type="button">Back</button>
+        <button class="btn-primary" id="btn-next-4" type="button">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 5: Confirmation -->
+    <section class="step-panel" data-step="5">
+      <div class="confirmation-content">
+        <div class="confirmation-check">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#263826" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h1 id="confirmation-heading">Thank You!</h1>
+        <p class="welcome-subtitle">Your information has been submitted successfully.</p>
+
+        <div class="summary-card" id="summary-card">
+          <!-- Summary content inserted by app.js -->
+        </div>
+
+        <div class="next-steps">
+          <h3>What Happens Next</h3>
+          <ol>
+            <li>Jack will review your information within 24 hours.</li>
+            <li>You'll receive a call or email to schedule an initial consultation.</li>
+            <li>We'll begin working on your behalf immediately.</li>
+          </ol>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-card-info">
+            <h3>Jack Rohr</h3>
+            <p class="contact-title">Managing Broker</p>
+            <p class="contact-detail">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:3038421869">(303) 842-1869</a>
+            </p>
+            <p class="contact-detail">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <a href="mailto:jrohr@resoluteinv.com">jrohr@resoluteinv.com</a>
+            </p>
+          </div>
+        </div>
+
+        <button class="btn-secondary" id="btn-start-over" type="button">Start Over</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/questionnaire.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/wizard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
