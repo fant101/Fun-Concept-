@@ -91,19 +91,43 @@ const LeadScoring = (() => {
       }
       case 'buyer_seller': {
         // Parse budget range for deal size signal
+        // Handles formats: "$2M", "$5m", "$500K", "$2,000,000", "$2000000"
         const budget = data.budget_range || '';
-        const numbers = budget.match(/[\d,.]+/g);
-        if (!numbers || numbers.length === 0) return 0.3; // Provided field but no parseable number
-        const maxVal = Math.max(...numbers.map(n => parseFloat(n.replace(/,/g, '')) || 0));
-        if (maxVal >= 10) return 1.0;   // $10M+
-        if (maxVal >= 5) return 0.8;    // $5M+
-        if (maxVal >= 2) return 0.6;    // $2M+
-        if (maxVal >= 1) return 0.4;    // $1M+
+        if (!budget) return 0;
+        const millions = parseBudgetToMillions(budget);
+        if (millions <= 0) return 0.3;  // Provided text but no parseable number
+        if (millions >= 10) return 1.0;  // $10M+
+        if (millions >= 5) return 0.8;   // $5M+
+        if (millions >= 2) return 0.6;   // $2M+
+        if (millions >= 1) return 0.4;   // $1M+
+        if (millions >= 0.5) return 0.3; // $500K+
         return 0.2;
       }
       default:
         return 0;
     }
+  }
+
+  /**
+   * Parse a budget string into millions. Handles "$2M", "$500K", "$2,000,000".
+   * Returns the largest number found, normalized to millions.
+   */
+  function parseBudgetToMillions(str) {
+    let maxMillions = 0;
+    // Match number + optional suffix (K, M, B)
+    const pattern = /[\$]?\s*([\d,.]+)\s*([KkMmBb])?/g;
+    let match;
+    while ((match = pattern.exec(str)) !== null) {
+      let num = parseFloat(match[1].replace(/,/g, '')) || 0;
+      const suffix = (match[2] || '').toUpperCase();
+      if (suffix === 'B') num *= 1000;
+      else if (suffix === 'M') num *= 1;
+      else if (suffix === 'K') num /= 1000;
+      else if (num >= 100000) num /= 1000000; // Raw large number → assume dollars
+      // else: bare small number → assume millions (e.g., "$2" in "$2-5M" context)
+      maxMillions = Math.max(maxMillions, num);
+    }
+    return maxMillions;
   }
 
   function scoreUrgency(data) {

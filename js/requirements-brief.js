@@ -210,14 +210,15 @@ const RequirementsBrief = (() => {
       const goalLabels = { leaseup: 'Lease-Up', sell: 'Sell', reposition: 'Reposition', management: 'Property Management' };
       const goalStr = data.goals.map(g => goalLabels[g] || g).join(', ');
       y = infoRow(doc, 'Goals', goalStr, y);
-
-      const timelineLabels = {
-        immediate: 'Immediately', '1-3months': '1-3 Months',
-        '3-6months': '3-6 Months', '6-12months': '6-12 Months', flexible: 'Flexible'
-      };
-      y = infoRow(doc, 'Timeline', timelineLabels[data.timeline] || data.timeline, y);
       y += 4;
     }
+
+    // Timeline (always shown, not conditional on goals)
+    const timelineLabels = {
+      immediate: 'Immediately', '1-3months': '1-3 Months',
+      '3-6months': '3-6 Months', '6-12months': '6-12 Months', flexible: 'Flexible'
+    };
+    y = infoRow(doc, 'Timeline', timelineLabels[data.timeline] || data.timeline, y);
 
     return y;
   }
@@ -240,15 +241,15 @@ const RequirementsBrief = (() => {
     if (data.budget_range) y = infoRow(doc, 'Budget / Price Range', data.budget_range, y);
     y += 4;
 
-    // Financial Targets
-    if (data.cap_rate || data.cash_on_cash) {
+    // Financial Targets & 1031
+    if (data.cap_rate || data.cash_on_cash || data.exchange_1031) {
       y = checkPageBreak(doc, y, 20);
       y = sectionHeader(doc, 'Financial Targets', y);
       if (data.cap_rate) y = infoRow(doc, 'Target Cap Rate', data.cap_rate, y);
       if (data.cash_on_cash) y = infoRow(doc, 'Target Cash-on-Cash', data.cash_on_cash, y);
 
       const exchLabels = { yes: 'Yes — Active 1031', no: 'No', considering: 'Considering' };
-      y = infoRow(doc, '1031 Exchange', exchLabels[data.exchange_1031] || data.exchange_1031, y);
+      if (data.exchange_1031) y = infoRow(doc, '1031 Exchange', exchLabels[data.exchange_1031] || data.exchange_1031, y);
       y += 4;
     }
 
@@ -315,27 +316,31 @@ const RequirementsBrief = (() => {
   function checkPageBreak(doc, y, needed) {
     if (y + needed > 275) {
       doc.addPage();
-      addFooter(doc);
       return MARGIN + 10;
     }
     return y;
   }
 
+  /**
+   * Add footer to ALL pages (called once at the end of PDF generation).
+   */
   function addFooter(doc) {
     const pageCount = doc.getNumberOfPages();
-    doc.setPage(pageCount);
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
 
-    // Footer line
-    doc.setDrawColor(203, 161, 53);
-    doc.setLineWidth(0.3);
-    doc.line(MARGIN, 282, PAGE_WIDTH - MARGIN, 282);
+      // Footer line
+      doc.setDrawColor(203, 161, 53);
+      doc.setLineWidth(0.3);
+      doc.line(MARGIN, 282, PAGE_WIDTH - MARGIN, 282);
 
-    // Footer text
-    doc.setFontSize(7);
-    doc.setTextColor(150, 150, 150);
-    doc.text('CONFIDENTIAL — Prepared by Resolute Real Estate', MARGIN, 287);
-    doc.text('Jack Rohr, Managing Broker | (303) 842-1869 | jrohr@resoluteinv.com', MARGIN, 291);
-    doc.text(`Page ${pageCount}`, PAGE_WIDTH - MARGIN, 287, { align: 'right' });
+      // Footer text
+      doc.setFontSize(7);
+      doc.setTextColor(150, 150, 150);
+      doc.text('CONFIDENTIAL — Prepared by Resolute Real Estate', MARGIN, 287);
+      doc.text('Jack Rohr, Managing Broker | (303) 842-1869 | jrohr@resoluteinv.com', MARGIN, 291);
+      doc.text(`Page ${i} of ${pageCount}`, PAGE_WIDTH - MARGIN, 287, { align: 'right' });
+    }
   }
 
   function formatSize(bytes) {

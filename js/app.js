@@ -172,6 +172,17 @@ const App = (() => {
       formBody.append(`field-${key}`, val);
     });
 
+    // Record intake in analytics pipeline (always, regardless of form POST success)
+    IntakeAnalytics.recordIntake(state);
+
+    Analytics.trackEvent('onboarding_complete', {
+      clientType: state.clientType,
+      fieldsCompleted: Object.keys(data).length,
+      filesUploaded: state.files.length,
+      agreementSigned: state.agreementAccepted,
+      leadScore: LeadScoring.scoreIntake(state).total
+    });
+
     try {
       const response = await fetch('/', {
         method: 'POST',
@@ -182,18 +193,6 @@ const App = (() => {
       if (!response.ok) {
         console.warn('Form submission response:', response.status);
       }
-
-      // Record intake in analytics pipeline
-      IntakeAnalytics.recordIntake(state);
-
-      Analytics.trackEvent('onboarding_complete', {
-        clientType: state.clientType,
-        fieldsCompleted: Object.keys(data).length,
-        filesUploaded: state.files.length,
-        agreementSigned: state.agreementAccepted,
-        leadScore: LeadScoring.scoreIntake(state).total
-      });
-
     } catch (error) {
       // Non-blocking — the user already sees the confirmation
       console.warn('Form submission error (non-blocking):', error.message);
@@ -503,6 +502,7 @@ const App = (() => {
 
   function loadScript(src) {
     return new Promise((resolve, reject) => {
+      if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
       const script = document.createElement('script');
       script.src = src;
       script.onload = resolve;
