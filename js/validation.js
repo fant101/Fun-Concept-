@@ -28,6 +28,13 @@ const Validation = (() => {
     const errors = [];
     let firstErrorField = null;
 
+    // Clear all previous field errors before re-validating
+    document.querySelectorAll('.form-field.has-error').forEach(el => {
+      el.classList.remove('has-error');
+      const errEl = el.querySelector('.form-error');
+      if (errEl) errEl.textContent = '';
+    });
+
     fields.forEach(field => {
       if (!field.required) return;
 

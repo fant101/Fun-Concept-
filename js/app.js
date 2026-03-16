@@ -61,7 +61,7 @@ const App = (() => {
       document.getElementById('questionnaire-form').innerHTML = '';
       document.getElementById('file-list').innerHTML = '';
 
-      Wizard.goToStep(0);
+      Wizard.goToStep(0, { force: true });
     });
 
     // PDF download button (added dynamically on confirmation step)
@@ -103,7 +103,7 @@ const App = (() => {
 
     document.getElementById('btn-resume-session').addEventListener('click', () => {
       banner.remove();
-      Wizard.goToStep(state.currentStep);
+      Wizard.goToStep(state.currentStep, { force: true });
     });
 
     document.getElementById('btn-new-session').addEventListener('click', () => {

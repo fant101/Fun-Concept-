@@ -164,7 +164,7 @@ const Questionnaire = (() => {
         input.className = 'form-input';
         input.placeholder = field.placeholder || '';
         input.required = field.required;
-        if (savedValue) input.value = savedValue;
+        if (savedValue != null && savedValue !== '') input.value = savedValue;
         input.addEventListener('input', () => {
           AppState.updateFormField(field.name, input.value);
           clearFieldError(wrapper);
@@ -184,7 +184,7 @@ const Questionnaire = (() => {
           option.textContent = opt.label;
           input.appendChild(option);
         });
-        if (savedValue) input.value = savedValue;
+        if (savedValue != null && savedValue !== '') input.value = savedValue;
         input.addEventListener('change', () => {
           AppState.updateFormField(field.name, input.value);
           clearFieldError(wrapper);
@@ -199,7 +199,7 @@ const Questionnaire = (() => {
         input.className = 'form-input';
         input.placeholder = field.placeholder || '';
         input.required = field.required;
-        if (savedValue) input.value = savedValue;
+        if (savedValue != null && savedValue !== '') input.value = savedValue;
         input.addEventListener('input', () => {
           AppState.updateFormField(field.name, input.value);
           clearFieldError(wrapper);

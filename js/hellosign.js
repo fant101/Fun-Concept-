@@ -132,6 +132,30 @@ const HelloSignIntegration = (() => {
       return;
     }
 
+    if (signingStatus === 'skipped') {
+      signArea.innerHTML = `
+        <div class="hellosign-status hellosign-status--sent">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#CBA135" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+          </svg>
+          <div>
+            <strong>Skipped for Now</strong>
+            <p>You can sign the agreement later. Jack will follow up with you to complete the representation agreement.</p>
+          </div>
+        </div>
+        <button class="btn-secondary btn-sm" id="btn-undo-skip" type="button">Go Back &amp; Sign</button>
+      `;
+      const undoBtn = document.getElementById('btn-undo-skip');
+      if (undoBtn) {
+        undoBtn.addEventListener('click', () => {
+          signingStatus = 'pending';
+          AppState.updateState('agreementAccepted', false);
+          updateSigningUI();
+        });
+      }
+      return;
+    }
+
     if (signingStatus === 'sent') {
       signArea.innerHTML = `
         <div class="hellosign-status hellosign-status--sent">
@@ -161,13 +185,13 @@ const HelloSignIntegration = (() => {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
-            <span>HelloSign is not configured yet. Set your Client ID and Template IDs in <code>js/hellosign.js</code> to enable signing. You can skip this step for now.</span>
+            <span>HelloSign is not yet configured. Clicking "Send" will simulate the signing flow for testing. Set your Client ID and Template IDs in <code>js/hellosign.js</code> for production.</span>
           </div>
         ` : ''}
       </div>
       <div class="hellosign-actions">
-        <button class="btn-primary" id="btn-send-agreement" type="button" ${!configured ? 'disabled' : ''}>
-          ${configured ? 'Send Agreement for Signing' : 'HelloSign Not Configured'}
+        <button class="btn-primary" id="btn-send-agreement" type="button">
+          ${configured ? 'Send Agreement for Signing' : 'Send Agreement (Demo)'}
         </button>
         <button class="btn-secondary btn-sm" id="btn-skip-signing" type="button">Skip for Now</button>
       </div>
@@ -177,7 +201,7 @@ const HelloSignIntegration = (() => {
     const sendBtn = document.getElementById('btn-send-agreement');
     const skipBtn = document.getElementById('btn-skip-signing');
 
-    if (sendBtn && configured) {
+    if (sendBtn) {
       sendBtn.addEventListener('click', () => sendForSigning());
     }
 
@@ -203,11 +227,6 @@ const HelloSignIntegration = (() => {
     const state = AppState.getState();
     const templateId = getTemplateId(state.clientType);
 
-    if (!templateId || templateId.startsWith('YOUR_')) {
-      console.error('HelloSign template ID not configured for:', state.clientType);
-      return;
-    }
-
     const sendBtn = document.getElementById('btn-send-agreement');
     if (sendBtn) {
       sendBtn.disabled = true;
@@ -215,7 +234,7 @@ const HelloSignIntegration = (() => {
     }
 
     try {
-      if (isConfigured()) {
+      if (isConfigured() && templateId && !templateId.startsWith('YOUR_')) {
         // Production: call serverless function
         const response = await fetch('/api/hellosign/send', {
           method: 'POST',
@@ -261,6 +280,10 @@ const HelloSignIntegration = (() => {
       if (sendBtn) {
         sendBtn.disabled = false;
         sendBtn.textContent = 'Retry Sending';
+      }
+      // Show visible error to user
+      if (typeof ErrorHandler !== 'undefined') {
+        ErrorHandler.showToast('Failed to send agreement. Please try again or skip for now.', 'error');
       }
     }
   }

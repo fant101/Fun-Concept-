@@ -11,7 +11,9 @@ const Wizard = (() => {
     stepperLines = document.querySelectorAll('.stepper-line');
   }
 
-  function goToStep(n) {
+  function goToStep(n, options) {
+    const force = options && options.force;
+
     // Bounds check
     if (n < 0 || n >= TOTAL_STEPS || !panels || !panels[n]) {
       console.warn('Wizard: invalid step', n);
@@ -21,11 +23,16 @@ const Wizard = (() => {
     const state = AppState.getState();
     const current = state.currentStep;
 
-    // Don't navigate to same step
-    if (n === current) return true;
+    // Check if DOM is already showing the right panel
+    const activePanel = document.querySelector('.step-panel.active');
+    const targetPanel = panels[n];
+    const domInSync = activePanel === targetPanel;
 
-    // Validate before advancing (not when going back)
-    if (n > current) {
+    // Don't navigate to same step (unless forced or DOM out of sync)
+    if (n === current && domInSync && !force) return true;
+
+    // Validate before advancing (not when going back or forcing)
+    if (n > current && !force) {
       const validation = Validation.validateStep(current);
       if (!validation.valid) {
         Validation.showStepError(validation.errors[0]);

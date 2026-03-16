@@ -27,17 +27,6 @@ exports.handler = async (event) => {
   }
 
   try {
-    // Parse multipart form data from base64 body
-    const contentType = event.headers['content-type'] || '';
-
-    if (!contentType.includes('multipart/form-data')) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: 'Content-Type must be multipart/form-data' })
-      };
-    }
-
     // For Netlify Blobs storage
     const store = getStore('onboarding-uploads');
     const timestamp = Date.now();
