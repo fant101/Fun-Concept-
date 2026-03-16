@@ -1001,3 +1001,176 @@ select.form-input {
 .hellosign-status--sent strong {
   color: var(--color-dark-green);
 }
+
+/* ===== Missing Utility Classes ===== */
+
+/* Contact card info wrapper (used in index.html) */
+.contact-card-info {
+  display: block;
+}
+
+/* Upload zone content wrapper (used in index.html) */
+.upload-zone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== Disabled States ===== */
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary:disabled:hover {
+  background: transparent;
+  color: var(--color-dark-green);
+  border-color: var(--color-dark-green-70);
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--color-gold);
+}
+
+/* ===== Responsive HelloSign ===== */
+@media (max-width: 640px) {
+  .hellosign-info {
+    padding: var(--space-5) var(--space-3);
+  }
+
+  .hellosign-details {
+    max-width: 100%;
+  }
+
+  .hellosign-detail-row {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .hellosign-detail-value {
+    text-align: left;
+  }
+
+  .hellosign-actions {
+    flex-direction: column;
+  }
+
+  .hellosign-actions .btn-primary {
+    min-width: 100%;
+  }
+}
+
+/* ===== Focus Accessibility ===== */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.card-select:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.file-item-remove:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ===== File List Overflow ===== */
+.file-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* ===== Resume Banner ===== */
+.resume-banner {
+  background: var(--color-gold-glow);
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+  animation: fadeInDown 0.4s ease both;
+}
+
+.resume-banner p {
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  margin-bottom: var(--space-3);
+}
+
+.resume-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+/* ===== Toast Notifications ===== */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+
+.toast {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s ease;
+  max-width: 360px;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast--error {
+  background: #FFF5F5;
+  border: 1px solid #FED7D7;
+  color: #C53030;
+}
+
+.toast--warning {
+  background: var(--color-gold-glow);
+  border: 1px solid var(--color-gold);
+  color: var(--color-dark-green);
+}
+
+.toast--success {
+  background: rgba(38, 56, 38, 0.06);
+  border: 1px solid var(--color-dark-green-70);
+  color: var(--color-dark-green);
+}
+
+/* ===== Summary Actions ===== */
+.summary-actions {
+  padding-top: var(--space-5);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .toast-container {
+    right: var(--space-3);
+    left: var(--space-3);
+  }
+
+  .toast {
+    max-width: 100%;
+  }
+}

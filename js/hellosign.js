@@ -39,7 +39,7 @@ const HelloSignIntegration = (() => {
   };
 
   // Track signing state
-  let signingStatus = 'pending'; // 'pending' | 'sent' | 'signed' | 'declined' | 'error'
+  let signingStatus = 'pending'; // 'pending' | 'sent' | 'signed' | 'skipped' | 'error'
   let signatureRequestId = null;
 
   /**
@@ -145,6 +145,10 @@ const HelloSignIntegration = (() => {
         </div>
         <button class="btn-secondary btn-sm" id="btn-resend-signing" type="button">Resend Email</button>
       `;
+      const resendBtn = document.getElementById('btn-resend-signing');
+      if (resendBtn) {
+        resendBtn.addEventListener('click', () => sendForSigning());
+      }
       return;
     }
 
@@ -184,7 +188,7 @@ const HelloSignIntegration = (() => {
         AppState.updateState('signatureDate', new Date().toLocaleDateString('en-US', {
           year: 'numeric', month: 'long', day: 'numeric'
         }));
-        signingStatus = 'signed'; // Allow proceeding
+        signingStatus = 'skipped';
         Validation.clearStepError();
         updateSigningUI();
       });
@@ -211,35 +215,37 @@ const HelloSignIntegration = (() => {
     }
 
     try {
-      // In production, call YOUR serverless function endpoint:
-      // const response = await fetch('/api/hellosign/send', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     templateId: templateId,
-      //     signerEmail: state.formData.email,
-      //     signerName: state.formData.contact_name || state.formData.company,
-      //     clientType: state.clientType,
-      //     metadata: {
-      //       company: state.formData.company || '',
-      //       phone: state.formData.phone || '',
-      //       onboardingDate: new Date().toISOString()
-      //     }
-      //   })
-      // });
-      //
-      // const data = await response.json();
-      // signatureRequestId = data.signatureRequestId;
-      //
-      // If using embedded signing, open the HelloSign client:
-      // HelloSign.open(data.signUrl, {
-      //   clientId: HELLOSIGN_CONFIG.clientId,
-      //   skipDomainVerification: HELLOSIGN_CONFIG.testMode
-      // });
+      if (isConfigured()) {
+        // Production: call serverless function
+        const response = await fetch('/api/hellosign/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            templateId: templateId,
+            signerEmail: state.formData.email,
+            signerName: state.formData.contact_name || state.formData.company,
+            clientType: state.clientType,
+            metadata: {
+              company: state.formData.company || '',
+              phone: state.formData.phone || '',
+              onboardingDate: new Date().toISOString()
+            }
+          })
+        });
 
-      // For now, simulate success:
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || `Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        signatureRequestId = data.signatureRequestId;
+      } else {
+        // Demo mode: simulate success
+        signatureRequestId = 'simulated_' + Date.now();
+      }
+
       signingStatus = 'sent';
-      signatureRequestId = 'simulated_' + Date.now();
 
       AppState.updateState('agreementAccepted', true);
       AppState.updateState('signatureName', 'Sent via HelloSign');
@@ -263,7 +269,7 @@ const HelloSignIntegration = (() => {
    * Check if the agreement step is complete (signed or skipped).
    */
   function isComplete() {
-    return signingStatus === 'signed' || signingStatus === 'sent';
+    return signingStatus === 'signed' || signingStatus === 'sent' || signingStatus === 'skipped';
   }
 
   /**

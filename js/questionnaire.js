@@ -149,6 +149,8 @@ const Questionnaire = (() => {
     wrapper.appendChild(label);
 
     let input;
+    const savedData = AppState.getFormData();
+    const savedValue = savedData[field.name];
 
     switch (field.type) {
       case 'text':
@@ -162,6 +164,7 @@ const Questionnaire = (() => {
         input.className = 'form-input';
         input.placeholder = field.placeholder || '';
         input.required = field.required;
+        if (savedValue) input.value = savedValue;
         input.addEventListener('input', () => {
           AppState.updateFormField(field.name, input.value);
           clearFieldError(wrapper);
@@ -181,6 +184,7 @@ const Questionnaire = (() => {
           option.textContent = opt.label;
           input.appendChild(option);
         });
+        if (savedValue) input.value = savedValue;
         input.addEventListener('change', () => {
           AppState.updateFormField(field.name, input.value);
           clearFieldError(wrapper);
@@ -195,6 +199,7 @@ const Questionnaire = (() => {
         input.className = 'form-input';
         input.placeholder = field.placeholder || '';
         input.required = field.required;
+        if (savedValue) input.value = savedValue;
         input.addEventListener('input', () => {
           AppState.updateFormField(field.name, input.value);
           clearFieldError(wrapper);
@@ -212,6 +217,7 @@ const Questionnaire = (() => {
           radio.type = 'radio';
           radio.name = field.name;
           radio.value = opt.value;
+          if (savedValue === opt.value) radio.checked = true;
           radio.addEventListener('change', () => {
             AppState.updateFormField(field.name, opt.value);
             clearFieldError(wrapper);
@@ -227,6 +233,7 @@ const Questionnaire = (() => {
       case 'checkbox-group':
         const cbGroup = document.createElement('div');
         cbGroup.className = 'checkbox-group';
+        const savedArr = Array.isArray(savedValue) ? savedValue : [];
         field.options.forEach(opt => {
           const cbLabel = document.createElement('label');
           cbLabel.className = 'checkbox-label';
@@ -234,6 +241,7 @@ const Questionnaire = (() => {
           cb.type = 'checkbox';
           cb.name = field.name;
           cb.value = opt.value;
+          if (savedArr.includes(opt.value)) cb.checked = true;
           cb.addEventListener('change', () => {
             const checked = cbGroup.querySelectorAll('input:checked');
             const values = Array.from(checked).map(c => c.value);

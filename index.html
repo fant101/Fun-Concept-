@@ -18,6 +18,18 @@
 </head>
 <body>
 
+  <!-- Hidden Netlify Form (for form detection at build time) -->
+  <form name="onboarding" netlify netlify-honeypot="bot-field" hidden>
+    <input name="bot-field">
+    <input name="client-type">
+    <input name="contact-name">
+    <input name="email">
+    <input name="phone">
+    <input name="agreement-status">
+    <input name="agreement-date">
+    <input name="files-count">
+  </form>
+
   <div class="wizard-container">
 
     <!-- Stepper -->

@@ -52,13 +52,14 @@ const Upload = (() => {
   function addFiles(fileListObj) {
     const state = AppState.getState();
     const newFiles = Array.from(fileListObj);
-    state.files = state.files.concat(newFiles);
+    AppState.updateState('files', state.files.concat(newFiles));
     renderFileList();
   }
 
   function removeFile(index) {
     const state = AppState.getState();
-    state.files.splice(index, 1);
+    const updated = state.files.filter((_, i) => i !== index);
+    AppState.updateState('files', updated);
     renderFileList();
   }
 
