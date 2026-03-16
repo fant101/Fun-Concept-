@@ -80,18 +80,11 @@ const Validation = (() => {
   }
 
   function validateAgreement() {
-    const state = AppState.getState();
-    const errors = [];
-
-    if (!state.agreementAccepted) {
-      errors.push('Please accept the representation agreement to continue.');
+    // Agreement must be sent via HelloSign or skipped
+    if (!HelloSignIntegration.isComplete()) {
+      return { valid: false, errors: ['Please send the agreement for signing or skip this step to continue.'] };
     }
-
-    if (!state.signatureName || state.signatureName.trim() === '') {
-      errors.push('Please type your full name as a signature.');
-    }
-
-    return { valid: errors.length === 0, errors };
+    return { valid: true, errors: [] };
   }
 
   function showStepError(message) {

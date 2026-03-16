@@ -832,3 +832,172 @@ select.form-input {
   background: var(--color-stone);
   margin: var(--space-3) auto;
 }
+
+/* ===== HelloSign Agreement ===== */
+.hellosign-info {
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+}
+
+.hellosign-doc-icon {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-dark-green);
+  color: var(--color-gold);
+  border-radius: var(--radius-lg);
+  margin: 0 auto var(--space-5);
+}
+
+.hellosign-info h4 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-dark-green);
+  margin-bottom: var(--space-3);
+}
+
+.hellosign-info > p {
+  color: var(--color-mid);
+  font-size: 0.9375rem;
+  max-width: 420px;
+  margin: 0 auto var(--space-6);
+}
+
+.hellosign-details {
+  text-align: left;
+  max-width: 440px;
+  margin: 0 auto;
+  background: var(--color-parchment);
+  border: 1px solid var(--color-stone);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.hellosign-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-stone);
+}
+
+.hellosign-detail-row:last-child {
+  border-bottom: none;
+}
+
+.hellosign-detail-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hellosign-detail-value {
+  font-size: 0.8125rem;
+  color: var(--color-mid);
+  text-align: right;
+}
+
+.hellosign-send-info {
+  margin-bottom: var(--space-5);
+}
+
+.hellosign-send-info p {
+  font-size: 0.9375rem;
+  color: var(--color-mid);
+}
+
+.hellosign-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.hellosign-actions .btn-primary {
+  flex: 1;
+  min-width: 200px;
+}
+
+.hellosign-actions .btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.hellosign-setup-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-gold-glow);
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-4);
+  font-size: 0.8125rem;
+  color: var(--color-mid);
+  line-height: 1.5;
+}
+
+.hellosign-setup-notice svg {
+  flex-shrink: 0;
+  color: var(--color-gold);
+  margin-top: 1px;
+}
+
+.hellosign-setup-notice code {
+  background: var(--color-white);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+}
+
+/* HelloSign Status States */
+.hellosign-status {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+.hellosign-status svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.hellosign-status strong {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: 0.9375rem;
+}
+
+.hellosign-status p {
+  font-size: 0.8125rem;
+  color: var(--color-mid);
+}
+
+.hellosign-status--signed {
+  background: rgba(38, 56, 38, 0.06);
+  border: 1px solid var(--color-dark-green-70);
+}
+
+.hellosign-status--signed strong {
+  color: var(--color-dark-green);
+}
+
+.hellosign-status--sent {
+  background: var(--color-gold-glow);
+  border: 1px solid var(--color-gold);
+}
+
+.hellosign-status--sent strong {
+  color: var(--color-dark-green);
+}
