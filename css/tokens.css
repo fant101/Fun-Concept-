@@ -1,0 +1,51 @@
+:root {
+  /* Primary */
+  --color-dark-green: #131F13;
+  --color-dark-green-90: #1A2B1A;
+  --color-dark-green-70: #263826;
+  --color-gold: #CBA135;
+  --color-gold-soft: #D9B856;
+  --color-gold-glow: rgba(203, 161, 53, 0.12);
+
+  /* Neutrals */
+  --color-cream: #FAF8F3;
+  --color-parchment: #F5F2EB;
+  --color-stone: #E6E2D9;
+  --color-white: #FFFFFF;
+
+  /* Text */
+  --color-ink: #3A3A34;
+  --color-mid: #6B6B60;
+  --color-light: #9E9E90;
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
