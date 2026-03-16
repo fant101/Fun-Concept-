@@ -26,11 +26,14 @@ const App = (() => {
     // Step 1: Client type cards
     document.querySelectorAll('.card-select').forEach(card => {
       card.addEventListener('click', () => {
+        const previousType = AppState.getState().clientType;
         document.querySelectorAll('.card-select').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
         AppState.updateState('clientType', card.dataset.type);
-        // Clear previous form data when type changes
-        AppState.updateState('formData', {});
+        // Only clear form data when switching to a different type
+        if (previousType !== card.dataset.type) {
+          AppState.updateState('formData', {});
+        }
         Validation.clearStepError();
       });
     });
