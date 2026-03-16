@@ -67,12 +67,35 @@ const App = (() => {
       Wizard.goToStep(0, { force: true });
     });
 
-    // PDF download button (added dynamically on confirmation step)
+    // PDF download buttons (delegated for dynamic content)
     document.addEventListener('click', (e) => {
       if (e.target.id === 'btn-download-pdf' || e.target.closest('#btn-download-pdf')) {
         generatePDF();
       }
+      if (e.target.id === 'btn-download-brief' || e.target.closest('#btn-download-brief')) {
+        downloadBrief();
+      }
     });
+
+    // Analytics panel toggle
+    const analyticsToggle = document.getElementById('analytics-toggle');
+    const analyticsPanel = document.getElementById('analytics-panel');
+    const analyticsClose = document.getElementById('analytics-close');
+
+    if (analyticsToggle && analyticsPanel) {
+      analyticsToggle.addEventListener('click', () => {
+        IntakeAnalytics.renderDashboard('analytics-content');
+        analyticsPanel.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    if (analyticsClose && analyticsPanel) {
+      analyticsClose.addEventListener('click', () => {
+        analyticsPanel.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
   }
 
   /**
@@ -160,11 +183,15 @@ const App = (() => {
         console.warn('Form submission response:', response.status);
       }
 
+      // Record intake in analytics pipeline
+      IntakeAnalytics.recordIntake(state);
+
       Analytics.trackEvent('onboarding_complete', {
         clientType: state.clientType,
         fieldsCompleted: Object.keys(data).length,
         filesUploaded: state.files.length,
-        agreementSigned: state.agreementAccepted
+        agreementSigned: state.agreementAccepted,
+        leadScore: LeadScoring.scoreIntake(state).total
       });
 
     } catch (error) {
@@ -275,9 +302,13 @@ const App = (() => {
       `;
     }
 
-    // PDF download button
+    // Download buttons
     html += `
       <div class="summary-actions">
+        <button class="btn-primary btn-sm" id="btn-download-brief" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -3px; margin-right: 4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download Requirements Brief (PDF)
+        </button>
         <button class="btn-secondary btn-sm" id="btn-download-pdf" type="button">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -3px; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download Summary (PDF)
@@ -286,6 +317,9 @@ const App = (() => {
     `;
 
     card.innerHTML = html;
+
+    // Render lead score card
+    LeadScoring.renderScoreCard('lead-score-container');
   }
 
   function getKeyFields(clientType, data) {
@@ -338,6 +372,31 @@ const App = (() => {
     }
 
     return fields;
+  }
+
+  /**
+   * Download the professional requirements brief PDF.
+   */
+  async function downloadBrief() {
+    const btn = document.getElementById('btn-download-brief');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+    }
+    try {
+      await RequirementsBrief.generate();
+    } catch (error) {
+      console.error('Brief generation error:', error);
+      ErrorHandler.showToast('Brief generation failed. Please try again.');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -3px; margin-right: 4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download Requirements Brief (PDF)
+        `;
+      }
+    }
   }
 
   /**

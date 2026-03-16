@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/analytics.css">
 </head>
 <body>
 
@@ -217,6 +218,10 @@
           <!-- Summary content inserted by app.js -->
         </div>
 
+        <div id="lead-score-container">
+          <!-- Lead score card inserted by lead-scoring.js -->
+        </div>
+
         <div class="next-steps">
           <h3>What Happens Next</h3>
           <ol>
@@ -247,6 +252,22 @@
 
   </div>
 
+  <!-- Analytics Panel (Broker-only overlay) -->
+  <div class="analytics-panel" id="analytics-panel">
+    <button class="analytics-close" id="analytics-close" type="button" aria-label="Close analytics">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="analytics-content">
+      <!-- Dashboard inserted by intake-analytics.js -->
+    </div>
+  </div>
+
+  <!-- Analytics Toggle (fixed button) -->
+  <button class="analytics-toggle" id="analytics-toggle" type="button">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+    Analytics
+  </button>
+
   <footer class="site-footer">
     <div class="footer-divider"></div>
     <p class="footer-brand">Resolute Real Estate</p>
@@ -258,6 +279,9 @@
   <script src="js/questionnaire.js"></script>
   <script src="js/upload.js"></script>
   <script src="js/hellosign.js"></script>
+  <script src="js/lead-scoring.js"></script>
+  <script src="js/requirements-brief.js"></script>
+  <script src="js/intake-analytics.js"></script>
   <script src="js/wizard.js"></script>
   <script src="js/app.js"></script>
 </body>
