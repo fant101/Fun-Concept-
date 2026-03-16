@@ -49,11 +49,46 @@ const Upload = (() => {
     });
   }
 
+  // 4 MB per file, 10 MB total (base64 adds ~33%, Netlify limit is 6 MB)
+  const MAX_FILE_SIZE = 4 * 1024 * 1024;
+  const MAX_TOTAL_SIZE = 10 * 1024 * 1024;
+  const ALLOWED_TYPES = /\.(pdf|doc|docx|xls|xlsx|csv|jpg|jpeg|png|gif|webp|txt|zip|rar)$/i;
+
   function addFiles(fileListObj) {
     const state = AppState.getState();
     const newFiles = Array.from(fileListObj);
-    AppState.updateState('files', state.files.concat(newFiles));
-    renderFileList();
+    const rejected = [];
+
+    const currentTotal = state.files.reduce((sum, f) => sum + (f.size || 0), 0);
+    let runningTotal = currentTotal;
+
+    const accepted = newFiles.filter(file => {
+      if (!ALLOWED_TYPES.test(file.name)) {
+        rejected.push(`${file.name}: unsupported file type`);
+        return false;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        rejected.push(`${file.name}: exceeds 4 MB limit`);
+        return false;
+      }
+      if (runningTotal + file.size > MAX_TOTAL_SIZE) {
+        rejected.push(`${file.name}: total upload size would exceed 10 MB`);
+        return false;
+      }
+      runningTotal += file.size;
+      return true;
+    });
+
+    if (rejected.length > 0) {
+      if (typeof ErrorHandler !== 'undefined') {
+        ErrorHandler.showToast(rejected.join('. '), 'warning');
+      }
+    }
+
+    if (accepted.length > 0) {
+      AppState.updateState('files', state.files.concat(accepted));
+      renderFileList();
+    }
   }
 
   function removeFile(index) {

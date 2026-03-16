@@ -220,7 +220,12 @@ const App = (() => {
         });
       }
 
-      await fetch('/api/upload', {
+      const clientName = encodeURIComponent(
+        AppState.getState().formData.contact_name ||
+        AppState.getState().formData.company ||
+        'unknown'
+      );
+      await fetch(`/api/upload?clientId=${clientName}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ files: fileData })
